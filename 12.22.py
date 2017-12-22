@@ -56,7 +56,7 @@ def proggen(rootchr,chrct):
 		tempnote=[]
 		try:
 			tempnote.append(Major[rootchr+cfif[x]])
-		except IndexError or TypeError:
+		except IndexError:
 			tempnote.append(Major[rootchr+calt[x]])
 		tempnote.append(ckeys[x])
 		tempnote.append("("+numchord[x]+")")
@@ -81,8 +81,8 @@ def proggen(rootchr,chrct):
 	elif int(chrct) < 1:
 		for n in range (0,6):
 			prog.append(ls[n])
-	print ('[%s]' % ', '.join(map(str, prog)))
-	twrite.write('[%s]' % ', '.join(map(str, prog))+'\n')
+	print ('[%s]' % '/ '.join(map(str, prog)))
+	twrite.write('[%s]' % '/ '.join(map(str, prog))+'\n')
 	twrite.close()
 	return prog
 	
@@ -136,7 +136,7 @@ def scalegen(prog):
 						degrees[j] = semitone[root + (keys[k])[j]]
 					tempscale.append(degrees[j])
 		print ("the following scale is in the key of "+prog[x]+":")
-		print ('[%s]' % ', '.join(map(str, tempscale)))
+		print ('[%s]' % '/ '.join(map(str, tempscale)))
 		def basstranscribe(scalels):
 			semitone = ['A','A#/Bb','B','C','C#/Db','D','D#/Eb','E','F','F#/Gb','G','G#/Ab']
 			Estring = 7
@@ -179,17 +179,19 @@ def scalegen(prog):
 				prev = 0
 				printls=[]
 				if ((stls[string])[0])!=0:
-					printls.append('-')
+					printls.append('__')
 				for num in stls[string]:
-					if num != '-':
+					if num != '__':
 						cur = num
 						diff = cur-prev
 						if diff > 0:
 							for x in range(1,diff):
-								printls.append('-')
+								printls.append('__')
 						prev = cur
+						if (num < 10):
+							num = ("0"+str(num))
 						printls.append(num)
-				twrite.write(('[%s]' % ', '.join(map(str, printls)))+'\n')
+				twrite.write(('[%s]' % '| '.join(map(str, printls)))+'\n')
 		twrite.close()
 		basstranscribe(tempscale)	
 prog = proggen(Uinput,Chordct)
